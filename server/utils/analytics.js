@@ -305,7 +305,7 @@ export const detectRisks = ({
 /**
 chronological grade trend from completed assignments
  */
-export const analyzePerformanceTrend = (assignments) => {
+export const analyzePerformanceTrend = (assignments, windowSize = 3) => {
   const graded = assignments
     .filter((a) => a.grade !== null && a.grade !== undefined)
     .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
@@ -313,7 +313,6 @@ export const analyzePerformanceTrend = (assignments) => {
   if (graded.length === 0) return [];
 
   const trendPoints = [];
-  const windowSize = 3; // rolling average window
 
   graded.forEach((a, index) => {
     // Rolling average over last `windowSize` assignments
@@ -391,4 +390,50 @@ export const getCourseBreakdown = (assignments) => {
   }
 
   return breakdown;
+};
+
+// --- Aliases/adapters matching the analyticsController API ---
+
+export const calculateGPA = calculateCourseGPA;
+
+/**
+ * splits assignments into completed/remaining and projects a final grade
+ */
+export const predictFinalGrade = (assignments) => {
+  const completed = assignments.filter((a) => a.status === 'completed');
+  const remaining = assignments.filter((a) => a.status !== 'completed');
+  return predictGrade(completed, remaining);
+};
+
+/**
+ * runs risk detection over a single assignment list and summarizes the result
+ */
+export const detectRisk = (assignments) => {
+  const alerts = detectRisks({ assignments });
+  const { average } = calculateCourseGPA(assignments);
+  const { projectedFinal } = predictFinalGrade(assignments);
+
+  const levelOrder = Object.values(RISK_LEVELS);
+  const riskLevel = alerts.reduce(
+    (highest, alert) =>
+      levelOrder.indexOf(alert.level) > levelOrder.indexOf(highest) ? alert.level : highest,
+    RISK_LEVELS.NONE
+  );
+
+  return {
+    riskLevel,
+    alerts,
+    recommendations: alerts.map((alert) => alert.message),
+    currentGrade: average ?? 0,
+    predictedGrade: projectedFinal ?? average ?? 0,
+  };
+};
+
+/**
+ * performance trend summary for a list of assignments
+ */
+export const getPerformanceSummary = (assignments, windowSize = 3) => {
+  const trend = analyzePerformanceTrend(assignments, windowSize);
+  const { direction, delta } = getTrendDirection(trend);
+  return { trend, direction, delta };
 };
