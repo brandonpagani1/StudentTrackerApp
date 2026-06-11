@@ -157,7 +157,7 @@ export default function AnalyticsDashboard({ token }) {
   title="Completed"
   value={data.completedAssignments}
   color="#2e7d32"
-  sub="63% done"
+  sub={`${completedPct}% done`}
   icon="✅"
 />
 
