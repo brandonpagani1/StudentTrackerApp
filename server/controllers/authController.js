@@ -107,6 +107,6 @@ export const login = async (req, res, next) => {
 
 // USER PROFILE
 export const profile = (req, res) => {
-  const { password, ...user } = req.user;
+  const { password: _password, ...user } = req.user;
   res.json({ user });
 };

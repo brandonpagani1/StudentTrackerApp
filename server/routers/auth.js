@@ -3,7 +3,6 @@ import express from 'express'; // Express router for authentication-related rout
 // Import controller functions for handling authentication operations
 import { login, register, profile } from '../controllers/authController.js';
 import { verifyToken } from '../middleware/auth.js';
-import sendEmail from "../utils/sendEmail.js";
 
 const router = express.Router(); // Create a new router instance for authentication routes
 
