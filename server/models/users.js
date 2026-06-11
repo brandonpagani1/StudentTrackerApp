@@ -1,28 +1,3 @@
-const mongoose = require("mongoose");
-
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Name is required"],
-    trim: true
-  },
-  email: {
-    type: String,
-    required: [true, "Email is required"],
-    unique: true,
-    lowercase: true,
-    match: [/.+\@.+\..+/, "Please enter a valid email"]
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 6
-  },
-  role: {
-    type: String,
-    enum: ["student", "admin"],
-    default: "student"
-  }
-}, { timestamps: true });
-
-module.exports = mongoose.model("User", userSchema);
+// server/models/users.js
+// In-memory user store (replace with a database in production)
+export const users = [];

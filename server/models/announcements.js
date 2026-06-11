@@ -1,19 +1,3 @@
-const mongoose = require("mongoose");
-
-const announcementSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true
-  },
-  message: {
-    type: String,
-    required: true
-  },
-  course: String,
-  createdBy: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  }
-}, { timestamps: true });
-
-module.exports = mongoose.model("Announcement", announcementSchema);
+// server/models/announcements.js
+// In-memory announcement store (replace with a database in production)
+export const announcements = [];
