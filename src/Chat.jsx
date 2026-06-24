@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
+import { API_BASE_URL } from "./config";
 
-const socket = io("http://localhost:8001");
+const socket = io(API_BASE_URL);
 
 function Chat() {
   const [message, setMessage] = useState("");

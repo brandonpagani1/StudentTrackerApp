@@ -4,6 +4,7 @@ import Announcements from "./Announcements";
 import Chat from "./Chat";
 import { io } from "socket.io-client";
 import AnalyticsDashboard from "./AnalyticsDashboard";
+import { API_BASE_URL } from "./config";
 
 
 function App() {
@@ -17,7 +18,7 @@ function App() {
   const [notification, setNotification] = useState("");
 
   useEffect(() => {
-  const socket = io("http://localhost:8001");
+  const socket = io(API_BASE_URL);
 
   socket.on("notification", (msg) => {
     setNotification(msg);

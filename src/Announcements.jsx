@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import { API_BASE_URL } from "./config";
 
 function Announcements() {
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8001/api/announcements")
+    fetch(`${API_BASE_URL}/api/announcements`)
       .then((res) => res.json())
       .then((data) => setAnnouncements(data))
       .catch((err) => console.log(err));

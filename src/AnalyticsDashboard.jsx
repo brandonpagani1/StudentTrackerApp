@@ -6,6 +6,7 @@ import ProgressBar from "./components/ProgressBar";
 import StatCard from "./components/StatCard";
 import RiskCard from "./components/RiskCard";
 import PerformanceChart from "./components/PerformanceChart";
+import { API_BASE_URL } from "./config";
 
 const PRIORITY_COLORS = {
   OVERDUE:  { bg: "#fdecea", text: "#c62828", border: "#e53935" },
@@ -113,7 +114,7 @@ export default function AnalyticsDashboard({ token }) {
     const load = async () => {
       try {
         setLoading(true);
-        const res = await fetch("http://localhost:8001/api/analytics/dashboard", {
+        const res = await fetch(`${API_BASE_URL}/api/analytics/dashboard`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error();
