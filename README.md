@@ -38,10 +38,14 @@ node server/index.js
 ## CI/CD
 
 Every push/PR to `main` runs lint + build via GitHub Actions (`.github/workflows/ci-cd.yml`).
-On push to `main`, it also deploys:
+On push to `main`, it also triggers a backend deploy on Render.
 
-- **Frontend → Vercel** (static `dist/` build)
-- **Backend → Render** (Express/Socket.IO server, via `render.yaml`)
+The frontend is deployed separately by **Vercel's own GitHub integration** (connected directly
+to whichever repo/branch the project was imported from on vercel.com) — it builds and deploys
+automatically on every push, independent of this repo's GitHub Actions workflow.
+
+- **Frontend → Vercel** (static `dist/` build, deployed via Vercel's native git integration)
+- **Backend → Render** (Express/Socket.IO server, via `render.yaml` + GitHub Actions deploy hook)
 
 ### One-time setup (per maintainer)
 
@@ -53,11 +57,14 @@ On push to `main`, it also deploys:
    - Note the service's public URL (e.g. `https://student-tracker-api.onrender.com`) — needed below.
 
 2. **Vercel (frontend)**
-   - Create a new project on [Vercel](https://vercel.com) importing this repo (framework: Vite).
-   - Add env var `VITE_API_URL` = your Render backend URL from step 1.
-   - Get a [Vercel API token](https://vercel.com/account/tokens), and your Org ID / Project ID (`vercel link` locally, then check `.vercel/project.json`).
-   - Add GitHub repo secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
+   - On [vercel.com](https://vercel.com), import the repo you want Vercel to deploy from (note: if you
+     don't have admin rights on the upstream repo, Vercel may create its own copy under your account —
+     check which repo it's actually watching under Project Settings → Git).
+   - Add env var `VITE_API_URL` = your Render backend URL from step 1, in that Vercel project's
+     Settings → Environment Variables.
+   - No GitHub secrets are needed for Vercel — it deploys directly, not through Actions.
 
-Once both are connected and secrets are set, every merge to `main` auto-deploys both services.
+Once both are set up, every push auto-deploys: Render via the Actions deploy hook on this repo,
+Vercel via its own git integration on whichever repo it's connected to.
 
 > Note: the backend currently stores data in memory (see `server/models/`), so every backend redeploy/restart resets all data. Fine for a class project demo; would need a real database for persistent data.
