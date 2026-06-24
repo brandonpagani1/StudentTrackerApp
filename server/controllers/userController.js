@@ -5,7 +5,7 @@
 import { users } from '../models/users.js';
 // List all users (admin only)
 export const listUsers = (req, res) => {
-  const safeUsers = users.map(({ password: _password, ...user }) => user);
+  const safeUsers = users.map(({ password, ...user }) => user);
   res.json(safeUsers);
 };
 // Get a specific user by ID (admin only)
@@ -15,6 +15,6 @@ export const getUser = (req, res) => {
     return res.status(404).json({ error: 'User not found' });
   }
 
-  const { password: _password, ...safeUser } = user;
+  const { password, ...safeUser } = user;
   res.json(safeUser);
 };

@@ -7,7 +7,7 @@ const socket = io(API_BASE_URL);
 function Chat() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
-  const [course] = useState("CPAN212");
+  const [course, setCourse] = useState("CPAN212");
 
   useEffect(() => {
     socket.emit("joinCourse", course);
