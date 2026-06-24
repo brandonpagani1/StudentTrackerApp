@@ -8,13 +8,10 @@ import { API_BASE_URL } from "./config";
 
 
 function App() {
-  const [assignments, setAssignments] = useState(() => {
-    const saved = localStorage.getItem("assignments");
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [assignments, setAssignments] = useState([]);
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
-  const [token] = useState(localStorage.getItem("token") || "");
+  const [token, setToken] = useState(localStorage.getItem("token") || "");
   const [notification, setNotification] = useState("");
 
   useEffect(() => {
@@ -26,6 +23,12 @@ function App() {
 
   return () => socket.disconnect();
 }, []);
+
+  // Load saved data
+  useEffect(() => {
+    const saved = localStorage.getItem("assignments");
+    if (saved) setAssignments(JSON.parse(saved));
+  }, []);
 
   // Save data
   useEffect(() => {
