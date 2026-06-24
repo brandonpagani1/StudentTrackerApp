@@ -26,12 +26,3 @@ jobs:
         with:
           name: dist
           path: dist
-
-  deploy-backend:
-    name: Deploy backend (Render)
-    needs: build
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Render deploy hook
-        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"

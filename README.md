@@ -1,6 +1,9 @@
 # Student Assignment Tracker
 CPAN 366 - Project - By BATmen - Alexander Watson, Ibrahim Hagi, Tsering Lama, and Brandon Pagani Lozano
 
+> **This repo has moved.** Development, CI/CD, and deploys now happen at
+> [watts0nlol/s](https://github.com/watts0nlol/s). Please clone/push there going forward.
+
 ## Setup
 
 ### Prerequisites
